@@ -172,3 +172,22 @@ footer p {
     font-size: 1rem;
   }
 }
+
+.cv-download {
+  margin-top: 20px;
+}
+
+.cv-download .cta-btn {
+  background-color: #ff5b5b;
+  padding: 12px 24px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.cv-download .cta-btn:hover {
+  background-color: #e04f4f;
+}
