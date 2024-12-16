@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="George Learmonth - Game Developer">
-  <title>Games Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet"> <!-- Fantasy + Readable font -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,58 +18,76 @@
         <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+	  <!-- Social Media Links -->
+      <ul class="social-links">
+        <li><a href="https://bsky.app/profile/leiwaan.bsky.social" target="_blank" class="social-icon" aria-label="Twitter">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Bluesky_Logo.svg/640px-Bluesky_Logo.svg.png" alt="Twitter Icon">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/george-learmonth/" target="_blank" class="social-icon" aria-label="LinkedIn">
+          <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg" alt="LinkedIn Icon">
+        </a></li>
+        <li><a href="https://soundcloud.com/leiwaan" target="_blank" class="social-icon" aria-label="Soundcloud">
+          <img src="https://d21buns5ku92am.cloudfront.net/26628/images/419679-1x1_SoundCloudLogo_cloudmark-f5912b-large-1645807040.jpg" alt="SC Icon">
+        </a></li>
+		</ul>
     </div>
   </nav>
+
+  <!-- Hidden SoundCloud Playlist Embed -->
+  <iframe id="hidden-soundcloud" width="100%" height="0" scrolling="no" frameborder="no" 
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1174680751&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false">
+  </iframe>
 
   <!-- About Me Section -->
   <section id="about" class="section">
     <div class="section-content">
       <h2>About Me</h2>
-      <p>Hello! I’m a generalist game developer with experience in audio programmning, game design, composition and writing.</p>
+      <p>I am a versatile game developer specializing in Game design, composition, and systems programming, with extensive experience crafting immersive audio environments for various games.</p>
+	  <p>I've spent much of my game development time making audio systems & engines for large, complex games. I have also led & contributed to the design of various prototypes, pitches and trailers.</p>
     </div>
   </section>
 
- <!-- Projects Section -->
+  <!-- Projects Section -->
   <section id="projects" class="section">
     <div class="section-content">
       <h2>Contributions</h2>
       <div class="projects-grid">
         <!-- LEGO Star Wars -->
-        <a href="https://store.steampowered.com/app/920210/LEGO_Star_Wars_The_Skywalker_Saga/" target="_blank" class="project-card">
-          <img src="https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_LegoStarWarsTheSkywalkerSaga_image1600w.jpg" alt="Lego SW" class="project-image">
+        <a href="https://store.steampowered.com/app/920210/LEGO_Star_Wars_The_Skywalker_Saga/" target="_blank" class="project-card" data-sound="lego-star-wars.mp3">
+          <img src="https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_LegoStarWarsTheSkywalkerSaga_image1600w.jpg" alt="LEGO Star Wars" class="project-image">
           <h3>LEGO Star Wars: The Skywalker Saga</h3>
-          <p>I co-wrote the audio engine & implemented tools such as the music editor & ambience volumes</p>
+          <p>Co-wrote the audio engine and implemented features such as the music editor and environmental & animation driven audio systems.</p>
         </a>
         <!-- Everywhere & MindsEye -->
-        <a href="https://store.steampowered.com/app/3265250/MindsEye/" target="_blank" class="project-card">
+        <a href="https://store.steampowered.com/app/3265250/MindsEye/" target="_blank" class="project-card" data-sound="trv.mp3">
           <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3265250/header.jpg?t=1729087317" alt="Everywhere & MindsEye" class="project-image">
           <h3>Everywhere & MindsEye</h3>
-          <p>Designed & Implemented core audio systems such as the music, oneshots & ambience system</p>
+          <p>Designed and implemented core audio systems, including dynamic music, ambient audio & user facing tools. Helped customize an Unreal 5 Wwise integration.</p>
         </a>
         <!-- ROOST -->
-        <a href="https://store.steampowered.com/app/3137450/ROOST/" target="_blank" class="project-card">
+        <a href="https://store.steampowered.com/app/3137450/ROOST/" target="_blank" class="project-card" data-sound="fog.mp3">
           <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3137450/header.jpg?t=1726141646" alt="ROOST" class="project-image">
           <h3>ROOST</h3>
-          <p>Composed the Trailer/Main Menu Music</p>
+          <p>Composed for the trailer and main menu.</p>
         </a>
-        <!-- Music -->
-        <a href="https://soundcloud.com/leiwaan" target="_blank" class="project-card">
-          <img src="https://f4.bcbits.com/img/0022099964_10.jpg" alt="ROOST" class="project-image">
-          <h3>My Music</h3>
-          <p></p>
+        <!-- My Music -->
+        <a href="https://soundcloud.com/leiwaan" target="_blank" class="project-card" id="my-music-card">
+          <img src="https://f4.bcbits.com/img/0022099964_10.jpg" alt="My Music" class="project-image">
+          <h3>Original Compositions</h3>
+          <p>Explore my collection of original music.</p>
         </a>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Contact Section -->
-  <section id="contact" class="section">
-    <div class="section-content">
-      <h2>Contact Me</h2>
-      <p>If you'd like to work together or have any questions, feel free to reach out to me!</p>
-      <a href="mailto:leiwaan@gmail.com" class="cta-btn">Email Me</a>
-
+		        <!-- Lego Marvel 2 -->
+        <a href="https://store.steampowered.com/app/647830/LEGO_Marvel_Super_Heroes_2/" target="_blank" class="project-card" data-sound="lego-star-wars.mp3">
+          <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/647830/header.jpg?t=1729802697" alt="marvel 2" class="project-image">
+          <h3>LEGO Marvel Super Heroes 2</h3>
+          <p>Created the dynamic facial animation, character animation audio systems and node based audio editor tools.</p>
+        </a>
+	  		        <!-- Lego DC -->
+        <a href="https://store.steampowered.com/app/829110/LEGO_DC_SuperVillains/" target="_blank" class="project-card" data-sound="lego-star-wars.mp3">
+          <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/829110/header.jpg?t=1729792311" alt="Lego DC" class="project-image">
+          <h3>LEGO DC Supervillians</h3>
+          <p>Expanded a large suite of audio features such as audio volumes, splines & updated the manager class to deal with large streamed levels.</p>
+        </a>
     </div>
   </section>
 
@@ -77,5 +95,52 @@
   <footer>
     <p>&copy; 2024 George Learmonth | All Rights Reserved</p>
   </footer>
+
+  <script src="https://w.soundcloud.com/player/api.js"></script>
+  <script>
+    // Get the SoundCloud iframe and the hover target
+    const iframe = document.querySelector('#hidden-soundcloud');
+    const myMusicCard = document.getElementById('my-music-card');
+    
+    // Initialize the SoundCloud player widget
+    const player = SC.Widget(iframe);
+
+    // Start playback when hovering over the 'My Music' tab
+    myMusicCard.addEventListener('mouseenter', function() {
+      player.play();  // Start the music playback when hovering over the card
+    });
+
+    // Stop playback when the hover is removed
+    myMusicCard.addEventListener('mouseleave', function() {
+      player.pause();  // Pause the music when the hover ends
+    });
+	
+	// Get all the project cards
+	const projectCards = document.querySelectorAll('.project-card');
+
+	// Create an Audio object to play the sounds
+	let audio = new Audio();
+
+	// Loop through each project card and set up event listeners
+	projectCards.forEach(card => {
+	  card.addEventListener('mouseenter', function() {
+		const soundUrl = card.getAttribute('data-sound'); // Get the sound URL from the data-sound attribute
+		
+		// Stop any currently playing sound
+		audio.pause();
+		audio.currentTime = 0;
+
+		// Load and play the new sound
+		audio.src = soundUrl;
+		audio.play();
+	  });
+
+	  card.addEventListener('mouseleave', function() {
+		// Stop the sound when the hover is removed
+		audio.pause();
+		audio.currentTime = 0;
+	  });
+	});
+  </script>
 </body>
 </html>

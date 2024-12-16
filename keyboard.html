@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Keyboard to Notes with Waveform Visualization and Tone Controls">
+  <title>Keyboard to Notes - Sound Synthesizer with Tone Controls</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    canvas {
+      margin-top: 20px;
+      background-color: #222;
+      border: 1px solid #ccc;
+      width: 80%;
+      height: 100px;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .control {
+      margin: 10px;
+    }
+    label {
+      font-size: 14px;
+      color: #333;
+    }
+    input[type="range"], select {
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Press keys to play notes</h1>
+  <canvas id="waveform" width="600" height="100"></canvas>
+
+  <div class="controls">
+    <div class="control">
+      <label for="distortion">Distortion</label>
+      <input type="range" id="distortion" min="0" max="1" value="0" step="0.01">
+    </div>
+
+    <div class="control">
+      <label for="filter">Filter Cutoff (Hz)</label>
+      <input type="range" id="filter" min="0" max="20000" value="500" step="10">
+    </div>
+
+    <div class="control">
+      <label for="formant">Formant Filter Frequency</label>
+      <input type="range" id="formant" min="0" max="20000" value="1000" step="10">
+    </div>
+  
+    <div class="control">
+      <label for="lfo-frequency">LFO Frequency</label>
+      <input type="range" id="lfo-frequency" min="0.1" max="10" value="1" step="0.1">
+    </div>
+
+    <div class="control">
+      <label for="lfo-depth">LFO Depth</label>
+      <input type="range" id="lfo-depth" min="0" max="1" value="0.5" step="0.01">
+    </div>
+
+    <div class="control">
+      <label for="modulation-depth">Waveform Modulation Depth</label>
+      <input type="range" id="modulation-depth" min="0" max="1" value="0.5" step="0.01">
+    </div>
+
+    <div class="control">
+      <label for="modulation-rate">Waveform Modulation Rate</label>
+      <input type="range" id="modulation-rate" min="0.1" max="10" value="1" step="0.1">
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.36/build/Tone.js"></script>
+  <script>
+    // Create the synth with effects
+    const synth = new Tone.PolySynth({
+      oscillator: {
+        type: 'sine',  // Default oscillator type
+      },
+      envelope: {
+        attack: 0.1,
+        decay: 0.2,
+        sustain: 0.3,
+        release: 0.8
+      }
+    }).toDestination();
+
+
+    // Effects: LFO for modulation
+    const lfo = new Tone.LFO(1, 100, 800).start();  // Default frequency 1 Hz, modulating from 100Hz to 800Hz
+    const modulation = new Tone.Signal(0.5); // Modulation depth
+
+    // Connect LFO to modulation depth (for controlling frequency or amplitude)
+    lfo.connect(modulation);
+	
+    // Effects
+    const distortion = new Tone.Distortion(0).toDestination();
+    const filter = new Tone.Filter(500, 'lowpass').toDestination();
+
+    // Connect effects to synth
+    synth.connect(distortion);
+    distortion.connect(filter);
+
+    // Set up the analyser for waveform visualization
+    const analyser = new Tone.Analyser("waveform", 512);
+    synth.connect(analyser);
+
+    // Map of keyboard keys to notes
+    const keyMap = {
+      'a': 'C4', 'w': 'C#4', 's': 'D4', 'e': 'D#4', 'd': 'E4',
+      'f': 'F4', 't': 'F#4', 'g': 'G4', 'y': 'G#4', 'h': 'A4',
+      'u': 'A#4', 'j': 'B4', 'k': 'C5', 'o': 'C#5', 'l': 'D5',
+      ';': 'D#5', "'": 'E5'
+    };
+
+    const keyPressed = {};
+
+    function playNote(note) {
+      const frequency = Tone.Frequency(note).toFrequency();
+      synth.triggerAttack(frequency);
+    }
+
+    function stopNote(note) {
+      const frequency = Tone.Frequency(note).toFrequency();
+      synth.triggerRelease(frequency);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      const note = keyMap[event.key];
+      if (note && !keyPressed[event.key]) {
+        keyPressed[event.key] = true;
+        playNote(note);
+      }
+    });
+
+    document.addEventListener('keyup', (event) => {
+      const note = keyMap[event.key];
+      if (note) {
+        keyPressed[event.key] = false;
+        stopNote(note);
+      }
+    });
+
+    // Setup the canvas to draw the waveform
+    const canvas = document.getElementById('waveform');
+    const ctx = canvas.getContext('2d');
+
+    function drawWaveform() {
+      const waveform = analyser.getValue();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#0099ff';
+      ctx.beginPath();
+      const sliceWidth = canvas.width / waveform.length;
+      let x = 0;
+
+      for (let i = 0; i < waveform.length; i++) {
+        const y = (waveform[i] * 0.5 + 0.5) * canvas.height;
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+        x += sliceWidth;
+      }
+
+      ctx.stroke();
+      requestAnimationFrame(drawWaveform);
+    }
+
+    drawWaveform();
+
+    // Update effects parameters based on user input from sliders
+    document.getElementById('distortion').addEventListener('input', (event) => {
+      const newDistortion = parseFloat(event.target.value);
+      distortion.distortion = newDistortion; // Update distortion amount
+    });
+
+    document.getElementById('filter').addEventListener('input', (event) => {
+      const newFilter = parseFloat(event.target.value);
+      filter.frequency.value = newFilter; // Update filter cutoff frequency
+    });
+
+    document.getElementById('formant').addEventListener('input', (event) => {
+      const newFormant = parseFloat(event.target.value);
+      formantFilter.frequency.value = newFormant; // Update formant filter frequency
+    });
+
+        drawWaveform();
+
+    // Update LFO frequency based on user input
+    document.getElementById('lfo-frequency').addEventListener('input', (event) => {
+      const newLfoFrequency = parseFloat(event.target.value);
+      lfo.frequency.value = newLfoFrequency; // Update LFO frequency
+    });
+
+    // Update LFO depth based on user input
+    document.getElementById('lfo-depth').addEventListener('input', (event) => {
+      const newLfoDepth = parseFloat(event.target.value);
+      modulation.value = newLfoDepth; // Update LFO modulation depth
+    });
+
+    // Update waveform modulation depth
+    document.getElementById('modulation-depth').addEventListener('input', (event) => {
+      const newModDepth = parseFloat(event.target.value);
+      synth.oscillator.modulationIndex = newModDepth; // Control the waveform's modulation depth
+    });
+
+    // Update waveform modulation rate
+    document.getElementById('modulation-rate').addEventListener('input', (event) => {
+      const newModRate = parseFloat(event.target.value);
+      synth.oscillator.frequency.value = newModRate; // Control the rate of waveform modulation
+    });
+  </script>
+
+</body>
+</html>
